@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="justinexample.xml" type="content"><item name="caption_box"><value><item name="header"><value><item name="label"><value><item name="text"><value>Use your Visa during Dec and</value></item>
+</value></item>
+<item name="header_backgroundcolor"><value>yellow</value></item>
+</value></item>
+<item name="body"><value><item name="body_text"><value>&lt;ul&gt;
+&lt;li&gt;
+&lt;div&gt;dog&lt;/div&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;div&gt;cat&lt;/div&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;div&gt;&lt;font color="#0000ff"&gt;apple&lt;/font&gt;&lt;/div&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;div&gt;&lt;a href="http://www.yahoo.com/" target="top"&gt;www.yahoo.com&lt;/a&gt;&lt;/div&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;div&gt;Eric&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</value></item>
+</value></item>
+</value></item></record>

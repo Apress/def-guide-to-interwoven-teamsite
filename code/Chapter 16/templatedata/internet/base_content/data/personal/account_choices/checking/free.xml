@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="free.html" type="content"><item name="base_content"><value><item name="title"><value>Free Checking</value></item>
+<item name="header_location"><value>../../../headers/main_header.html</value></item>
+<item name="footer_location"><value>../../../footers/main_footer.html</value></item>
+<item name="cboxes"><value><item name="location"><value>../../../caption_box/my_account.html</value></item>
+<item name="color"><value>one</value></item></value><value><item name="location"><value>../../../caption_box/account_shortcuts.html</value></item>
+<item name="color"><value>one</value></item></value><value><item name="location"><value>../../../caption_box/atm_search.html</value></item>
+<item name="color"><value>two</value></item></value></item>
+<item name="body"><value><item name="intro"><value><item name="heading"><value>Account Choices</value></item>
+<item name="text"><value>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Praesent vulputate, magna vel ornare varius, ligula enim ultrices libero, sit amet rhoncus lorem dui eget enim. Aenean dapibus bibendum velit.</value></item>
+</value></item>
+</value><value><item name="normal"><value><item name="heading"><value>Checking</value></item>
+<item name="text"><value>amet orci. Vestibulum enim. Praesent mollis. In non arcu ut magna elementum tempus. Mauris pulvinar massa ut tellus. Morbi porttitor accumsan nunc. Sed augue eros, euismod vel, pulvinar vitae, eleifend sodales, neque. Proin scelerisque, nunc id pharetra tempus.
+
+</value></item>
+</value></item>
+</value><value><item name="normal"><value><item name="heading"><value>Savings</value></item>
+<item name="text"><value>Ut in sem. Donec quis dui. In hac habitasse platea dictumst. Vivamus rutrum sollicitudin arcu. Vivamus iaculis, arcu cursus ultricies dictum, odio massa ullamcorper felis, id malesuada mauris sapien sed sem. Phasellus scelerisque, sapien non porta vestibulum.</value></item>
+</value></item>
+</value><value><item name="normal"><value><item name="heading"><value>Investment</value></item>
+<item name="text"><value>sit amet pede eu elit vestibulum varius. Sed dignissim ullamcorper purus. Cras ultrices cursus lacus. Cras id lectus at est adipiscing hendrerit. Suspendisse turpis arcu, nonummy in, pharetra quis, tincidunt a, eros. Curabitur ac tellus. Suspendisse tempus mauris a dolor.
+</value></item>
+</value></item>
+</value></item>
+</value></item></record>

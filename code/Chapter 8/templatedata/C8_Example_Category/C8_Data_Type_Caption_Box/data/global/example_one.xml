@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="example_one.xml" type="content"><item name="caption_box"><value><item name="header"><value><item name="label"><value><item name="text"><value>Global Info</value></item>
+</value></item>
+<item name="header_backgroundcolor"><value>#cdcdcd</value></item>
+</value></item>
+<item name="body"><value><item name="body_text"><value>&lt;p&gt;This information is global, and will show up on several pages.&lt;/p&gt;
+
+</value></item>
+</value></item>
+</value></item></record>

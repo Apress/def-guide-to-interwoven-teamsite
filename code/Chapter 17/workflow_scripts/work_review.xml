@@ -1,0 +1,118 @@
+<workflow name="work_review" owner="workflow_user" creator="workflow_user" >
+
+  <!-- Workflow Variables -->
+  <variables>
+    <variable key="process_type" value="deployment"/>
+    <variable key="resolution_group" value=""/>
+    <variable key="deployment_type" value=""/>
+    <variable key="" value=""/>
+  </variables>
+
+  <!-- Setup Process ## 1 -->
+  <externaltask 
+    name="Setup_Process"
+    owner="workflow_user"
+    start="t"
+    description = "Determine Work Review Needs from Parent workflow">
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+    <successors>
+      <successorset description="Perform Work">
+        <succ v="Perform_Work"/>
+      </successorset>
+    <command v="setup_process.ipl"/>
+    <wfvarfinishop op="set" name="email_type" value="Work Notification" />
+  </externaltask>
+  
+  <!-- resolve_deployment ## 2 -->      
+  <grouptask
+    name="Perform_Work"
+    description = "Perform Work Request"
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common" />
+    <successors>
+      <successorset description="Review" />
+          <succ v="Review_Work" />
+          <succ v="Prepare_Email" />
+      </successorset>
+    </successors>
+    <sharedby>
+      <group v="workflow_group" />
+    </sharedby>
+    <wfvarfinishop op="set" name="email_type" value="Work Review" />
+  </grouptask>
+  
+  <!-- Review Work ## 3 -->      
+  <grouptask
+    name="Review_Work"
+    description = "Perform Work Request"
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common" />
+    <successors>
+      <successorset description="Rework" />
+          <succ v="Work" />
+          <succ v="Prepare_Email" />
+      </successorset>
+      <successorset description="Approve" />
+          <succ v="Set_Workflow" />
+      </successorset>
+    </successors>
+    <sharedby>
+      <group v="workflow_group" />
+    </sharedby>
+    <wfvarfinishop op="set" name="email_type" value="Rework Notification" />
+  </grouptask>
+  
+  <!-- Prepare Email ## 4 -->
+  <externaltask 
+    name="Prepare_Email"
+    owner="workflow_user"
+    start="f"
+    description = "Determine Work Review Needs from Parent workflow">
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+    <successors>
+      <successorset description="Perform Work">
+        <succ v="Send_Email"/>
+      </successorset>
+    <command v="prepare_email.tpl"/>
+    <wfvarfinishop op="set" name="email_type" value="" />
+  </externaltask>
+  
+  <!-- Send Email ## 5 -->
+  <externaltask 
+    name="Send_Email"
+    owner="workflow_user"
+    start="f"
+    description = "Send Email Notifications">
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+    <variables>
+      <variable key="iw_mailheader_pt" value="reviewer_iwmailheader.tpl"/>
+      <variable key="iw_mailbody_pt" value="reviewer_iwmailbody.tpl"/>
+      <variable key="iw_mailbody_text_pt" value="reviewer_textbody.tpl"/>
+    </variables>    
+    <successors>
+      <successorset description="Perform Work">
+        <succ v="Email_Complete"/>
+      </successorset>
+    <command v="setup_process.ipl"/>
+  </externaltask>
+
+  <!-- Set Workflow ## 6 -->
+  <externaltask 
+    name="Set_Workflow"
+    owner="workflow_user"
+    start="t"
+    description = "Set workflow values, and signal success">
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+    <successors>
+      <successorset description="End">
+        <succ v="end"/>
+      </successorset>
+    <command v="set_workflow.ipl"/>
+  </externaltask>
+  
+  <!-- End ## 7 -->
+  <endtask
+    name="end"
+    description="End Workflow"
+    >
+  </endtask>
+    
+</workflow>

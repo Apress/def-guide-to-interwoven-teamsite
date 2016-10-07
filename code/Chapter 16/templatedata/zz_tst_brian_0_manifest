@@ -1,0 +1,26 @@
+<tst_manifest version='1.0'>
+  <command compiler='C:\PROGRA~1\INTERW~1\TeamSite/bin/iwpt_compile.ipl'>
+    <arg>-umask</arg>
+    <arg>0113</arg>
+    <arg>-pt</arg>
+    <arg>Y:\default\main\FiCorp.com\WORKAREA\common\templatedata\internet\base_content\presentation\base_content.tpl</arg>
+    <arg>-smartwrite</arg>
+    <arg>-iw_pt-preview</arg>
+    <arg>-ofile</arg>
+    <arg>Y:\default\main\FiCorp.com\WORKAREA\common\preview.html</arg>
+    <arg>-iw_include-location</arg>
+    <arg>Y:\default\main\FiCorp.com\WORKAREA\common</arg>
+    <arg>-osenc</arg>
+    <arg>CP1252</arg>
+    <arg>-manifest</arg>
+    <arg>Y:\default\main\FiCorp.com\WORKAREA\common\templatedata\zz_tst_brian_0_manifest</arg>
+    <arg>-oprefix</arg>
+    <arg>zz_tst_brian_0_</arg>
+    <arg>-iw_pt-dcr</arg>
+    <arg>Y:\default\main\FiCorp.com\WORKAREA\common\templatedata\internet\base_content\data\index.xml</arg>
+  </command>
+  <ifile type='xml'>Y:\default\main\FiCorp.com\WORKAREA\common\templatedata\internet\base_content\data\index.xml</ifile>
+  <ifile type='pt'>Y:\default\main\FiCorp.com\WORKAREA\common\templatedata\internet\base_content\presentation\base_content.tpl</ifile>
+  <ofile modified='t'>Y:/default/main/FiCorp.com/WORKAREA/common/zz_tst_brian_0_preview.html</ofile>
+  <status>OK</status>
+</tst_manifest>

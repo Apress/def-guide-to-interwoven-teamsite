@@ -1,0 +1,198 @@
+
+
+<template_script><![CDATA[
+
+# Import routines from library
+use TeamSite::Usertask qw(
+                          cleanup_paths
+                          make_l10n_input_with_roles_callout
+                          get_names_from_file
+                          get_mail_cmd
+                          make_branchpathlist
+                          );
+
+######################################################################
+# Setup paths & work area
+######################################################################
+sub set_area{
+    my($btag, $watag) = @_;
+    my($avpath, $bpath, $wapath, $skip);
+    my($iwbpath, $iwwapath) = (__VALUE__("iw_branch"),
+                               __VALUE__("iw_workarea"));
+    if ((length($iwbpath)) > 0 && (length($iwwapath)) > 0){
+        $bpath = $iwbpath;
+        ($wapath = $iwwapath) =~ s|^\s*/.*:||;
+        $wapath =~ s|/\s*$||;
+        return("$wapath", "$iwbpath", "$wapath", "TRUE");
+    }
+    ($bpath, $wapath, $avpath) = cleanup_paths(__VALUE__("$btag"),
+                                               __VALUE__("$watag"));
+    return("$avpath", "$bpath", "$wapath", "FALSE");
+}
+
+
+my($area_vpath, $branch_path, $work_area, $skip_branch) =
+    set_area("branch_path", "work_area");
+
+TAG_info(
+         iw_author =>
+         [ html  => make_l10n_input_with_roles_callout("iw_author", undef, undef, __VALUE__("iw_locale"), "author"),
+           label => "Author",
+           valid_input => 'is_valid_author()',
+           error_msg => 'Please select a valid author',
+           ],
+         iw_desc =>
+         [ html  => "<textarea rows='5' style='width:100%;'></textarea>",
+           label => "Job Description", 
+           error_msg => 'Please enter a description',
+           ],
+         );
+
+if ($skip_branch eq "FALSE"){
+    my($branch_menu) = make_branchpathlist("$iwhome");
+    TAG_info(
+             branch_path =>
+             [ html  => "$branch_menu",
+               label => 'Select Branch',
+               ],
+             );
+
+}
+
+]]></template_script>
+
+
+
+<workflow name='Author_Assignment'
+          owner="__TAG__('iw_user');"
+          creator="__TAG__('iw_user');"
+          description="__TAG__('iw_desc');">
+
+  <!-- Workflow Variables -->
+  <variables>
+    <variable key="process_type" value="deployment"/>
+    <variable key="resolution_group" value=""/>
+    <variable key="deployment_type" value=""/>
+    <variable key="" value=""/>
+  </variables>
+
+  <!-- Work Review ## 1 -->
+  <wftask 
+    name="Work_Review"
+    start="f"
+    description="Work Review">
+    <successors>
+      <successorset description="">
+        <succ v="2nd_Level_Review" />
+      </successorset>
+    </successors>
+  
+    <jobfile v="work_review.xml">
+    <areavpath v=""/>
+  </wftask>
+  
+  <!-- 2nd Level Review ## 2 -->
+  <wftask 
+    name="2nd_Level_Review"
+    start="f"
+    description="2nd Level Review">
+    <successors>
+      <successorset description="Final Review">
+        <succ v="Final_Review" />
+        <succ v="Prepare_Email" />
+      </successorset>
+      <successorset description="Rejection">
+        <succ v="Work_Review" />
+        <succ v="Prepare_Email" />
+      </successorset>
+      <successorset description="Deploy">
+        <succ v="Deploy" />
+      </successorset>
+    </successors>
+  
+    <jobfile v="review.xml">
+    <areavpath v=""/>
+  </wftask>
+  
+  <!-- Final Review ## 3 -->
+    <wftask 
+      name="Final_Review"
+      start="f"
+      description="Final Review">
+      <successors>
+        <successorset description="Final Review">
+          <succ v="3rd_Level_Review" />
+          <succ v="Prepare_Email" />
+        </successorset>
+        <successorset description="Reject">
+          <succ v="Work_Review" />
+          <succ v="Prepare_Email" />
+        <successorset description="Deploy">
+          <succ v="Deploy" />
+        </successorset>
+      </successors>
+       <jobfile v="review.xml">
+      <areavpath v=""/>
+  </wftask>
+
+  <!-- Prepare Email ## 4 -->
+  <externaltask 
+    name="Prepare_Email"
+    owner="workflow_user"
+    start="f"
+    description = "Determine Work Review Needs from Parent workflow">
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+    <successors>
+      <successorset description="Perform Work">
+        <succ v="Send_Email"/>
+      </successorset>
+    <command v="prepare_email.tpl"/>
+    <wfvarfinishop op="set" name="email_type" value="" />
+  </externaltask>
+  
+  <!-- Send Email ## 5 -->
+  <externaltask 
+    name="Send_Email"
+    owner="workflow_user"
+    start="f"
+    description = "Send Email Notifications">
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+    <variables>
+      <variable key="iw_mailheader_pt" value="reviewer_iwmailheader.tpl"/>
+      <variable key="iw_mailbody_pt" value="reviewer_iwmailbody.tpl"/>
+      <variable key="iw_mailbody_text_pt" value="reviewer_textbody.tpl"/>
+    </variables>    
+    <successors>
+      <successorset description="Perform Work">
+        <succ v="Email_Complete"/>
+      </successorset>
+    <command v="setup_process.ipl"/>
+  </externaltask>
+
+  <!-- Final Review ## 6 -->
+    <wftask 
+      name="Deployment"
+      start="f"
+      description="Final Review">
+      <successors>
+        <successorset description="Finished">
+          <succ v="end" />
+          <succ v="Prepare_Email" />
+        </successorset>
+        <successorset description="Reject">
+          <succ v="Work_Review" />
+          <succ v="Prepare_Email" />
+        </successorset>
+      </successors>
+       <jobfile v="deployment.xml">
+      <areavpath v=""/>
+  </wftask>  
+
+  <!-- End ## 7 -->
+  <endtask
+    name="end"
+    description="End Workflow">
+  </endtask>
+  
+    
+</workflow>  

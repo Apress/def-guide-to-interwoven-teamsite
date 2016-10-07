@@ -1,0 +1,97 @@
+<workflow name="work_review" owner="workflow_user" creator="workflow_user" >
+
+  <!-- Workflow Variables -->
+  <variables>
+    <variable key="process_type" value=""/>
+    <variable key="resolution_group" value=""/>
+    <variable key="deployment_type" value=""/>
+    <variable key="" value=""/>
+  </variables>
+
+  <!-- Start_Workflow ## 0 -->
+  <externaltask 
+     name="Start_Workflow"
+     owner="TS-HOME/brian"
+     start="t">
+     description = "Start Workflow">
+     <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+     <successors>
+       <successorset description="Perform Work">
+         <succ v="Setup_Process"/>
+       </successorset>
+     </successors>
+     <command v="ff"/>
+  </externaltask>
+
+  <!-- Setup Process ## 1 -->
+  <externaltask 
+    name="Setup_Process"
+    owner="workflow_user"
+    start="f"
+    description = "Determine Work Review Needs from Parent workflow">
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+    <successors>
+      <successorset description="Perform Work">
+        <succ v="Perform_Work"/>
+      </successorset>
+    </successors>
+    <command v="setup_process.ipl"/>
+    <wfvarfinishop op="set" name="email_type" value="Work Notification" />
+  </externaltask>
+  
+    <!-- Review Work ## 2 -->      
+    <grouptask
+      name="Review_Work"
+      description = "Perform Work Request">
+      <areavpath v="/default/main/FiCorp.com/WORKAREA/common" />
+      <successors>
+        <successorset description="Accept" />
+            <succ v="Set_Workflow_Success" />
+        </successorset>
+        <successorset description="Reject" />
+            <succ v="Set_Workflow_Fail" />
+        </successorset>
+      </successors>
+      <sharedby>
+        <group v="workflow_group" />
+      </sharedby>
+      <wfvarfinishop op="set" name="email_type" value="Rework Notification" />
+  </grouptask>
+  
+    <!-- Set Workflow ## 3 -->
+    <externaltask 
+      name="Set_Workflow_Success"
+      owner="workflow_user"
+      start="t"
+      description = "Set workflow values, and signal success">
+      <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+      <successors>
+        <successorset description="End">
+          <succ v="end"/>
+        </successorset>
+      <command v="set_workflow.ipl"/>
+  </externaltask>
+  
+    <!-- Set Workflow ## 4 -->
+    <externaltask 
+      name="Set_Workflow_Fail"
+      owner="workflow_user"
+      start="t"
+      description = "Set workflow values, and signal Failure">
+      <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+      <successors>
+        <successorset description="End">
+          <succ v="end"/>
+        </successorset>
+      <command v="set_workflow.ipl"/>
+  </externaltask>
+  
+    <!-- End ## 5 -->
+    <endtask
+      name="end"
+      description="End Workflow"
+      >
+  </endtask>
+  
+    
+</workflow>  

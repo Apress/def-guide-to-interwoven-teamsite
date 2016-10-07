@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="panthers.xml" type="content"><item name="caption_box"><value><item name="Team"><value>Panthers</value></item>
+<item name="City"><value>Jonesburgh</value></item>
+<item name="Player"><value><item name="Name"><value>Jim Smith</value></item>
+<item name="Number"><value>13</value></item>
+<item name="Position"><value>First Base</value></item>
+</value><value><item name="Name"><value>Brian Green</value></item>
+<item name="Number"><value>10</value></item>
+<item name="Position"><value>Third Base</value></item>
+</value></item>
+</value></item></record>

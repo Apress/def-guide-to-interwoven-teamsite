@@ -1,0 +1,82 @@
+<workflow name="deployment" owner="workflow_user" creator="workflow_user" >
+
+  <!-- Workflow Variables -->
+  <variables>
+    <variable key="process_type" value="deployment"/>
+    <variable key="resolution_group" value=""/>
+    <variable key="deployment_type" value=""/>
+    <variable key="" value=""/>
+  </variables>
+
+  <!-- Setup Process ## 1 -->
+  <externaltask 
+    name="Setup_Process"
+    owner="workflow_user"
+    start="t"
+    description = "Determine Deployment Needs from Parent workflow">
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+    <successors>
+      <successorset description="File Based Deployment">
+        <succ v="file_based_deployment"/>
+      </successorset>
+      <successorset description="Edition Based Deployment">
+        <succ v="edition_based_deployment"/>
+      </successorset>
+    </successors>
+    <command v="setup_process.ipl"/>
+  </externaltask>
+
+  <!-- Submit ## 2 -->      
+  <submittask
+    name="submit"
+    savecomments = "t"
+    description = "Submit files before creating an edition and deploying">
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common"/>
+    <successorset description="Post Submittion">
+      <succ v="Deploy" />
+    </successorset>
+  </submittask>
+  
+  <!-- Deploy ## 3 -->
+  <externaltask
+    name="Deploy"
+    owner="workflow_user"
+    description="Deployments that are handled through editions"
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common" />
+    <successors>
+      <successorset description="Deployment Successful">
+        <succ v="end" />
+      </successorset>
+      <successorset description="Deployment Failed">
+        <succ v="resolve_deployment" />
+      </successorset>
+    </successors>
+    <command v="deployment.ipl" />
+  </externaltask>
+  
+  <!-- resolve_deployment ## 4 -->      
+  <grouptask
+    name="resolve_deployment"
+    description = "Admin group efforts to fix deployment"
+    <areavpath v="/default/main/FiCorp.com/WORKAREA/common" />
+    <successors>
+      <successorset description="Redeploy" />
+          <succ v="Deploy" />
+      </successorset>
+      <successorset description="End Workflow" />
+        <succ v="end" />
+      </successorset>
+    </successors>
+    <sharedby>
+      <group v="workflow_group" />
+    </sharedby>
+  </grouptask>
+  
+  <!-- End ## 5 -->
+  <endtask
+    name="end"
+    description="End Workflow"
+    >
+  </endtask>
+  
+</workflow>

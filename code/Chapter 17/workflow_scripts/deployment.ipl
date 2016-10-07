@@ -1,0 +1,105 @@
+#!/opt/teamsite/iw-home/iw-perl/bin/iwperl
+
+################################################################
+#  deployment.ipl
+#
+#  Purpose:
+#  This script will gather data from the workflow and 
+#  deploy files to the target specified in the job variables
+#
+#  Author:
+#  Brian Hastings 2-15-2006
+#
+################################################################
+
+use TeamSite::WFworkflow;
+use TeamSite::WFtask;
+
+my @deploy_status = ( "0", "Succeeded",
+                      "1", "Failed to Start",
+                      "2", "Ran and Returned a Failed Status",
+                      "9", "Completed With Errors");                          
+                    
+
+my ($job_id,$task_id) = @ARGV;
+
+# Verify we have a job id
+if (!defined $job_id || !defined $task_id) {
+  print "Usage: deployment.ipl must be called from an " .
+        "active workflow task.";
+  exit;
+}
+
+# Create our current Job instance
+my $job  = new Teamsite::WFworkflow($job_id);
+
+# Create our current task instance
+my $task = new Teamsite::WFtask($task_id);
+
+# Area vpath
+my $area_v_path = $task->GetArea();
+
+
+my $deployment_type = $job->GetVariable("deployment_type");
+my $target_node     = $job->GetVariable("target_node");
+
+# Grab files attached to the job
+my @files = $task->GetFiles() || ();
+
+my $dep_stat = "";
+
+if ($deployment_type eq "edition_based") {
+  
+  # Create Edition
+  my $edition_name = create_edition_name();
+  create_edition($edition_name);  
+
+
+  my ($path,undef) = split("WORKAREA",$area_v_path);
+  my $source = $path . "EDITIONS/$edition_name/";
+
+  $dep_stat = perform_deployment("edition_based -k source=$source -k target=$target_node");
+
+}
+
+if ($deployment_type eq "file_based") {
+
+  # Create File List
+  my $filepath ="c:\tmp\deployments\${job_id}_deployment";
+  open (FILE, ">filepath");
+  foreach my $filename (@files) {
+    print FILE $filename . "\n";
+  }
+  close FILE;
+  
+  $dep_stat = perform_deployment("file_based -k deployment_path=$filepath -k source=$source -k target=$target_node");
+  
+
+}
+
+# Transition task
+$task->SetComment("Return Code: " . $deploy_stat[$dep_stat]; 
+
+
+if ($dep_stat) {
+  # Failed - Resolve Deployment Failure
+  $task->CallBack(1);
+} else {
+  # Success
+  $task->CallBack(0);
+}
+exit;
+
+
+
+################################################################
+# Perform Deployment makes a system call to perform deployment
+# and returns the status of deployment
+################################################################
+sub perform_deployment ($) {
+  my $deployment_string = shift;
+  my $status = system("c:\interwoven\OpenDeployNG\bin\iwodstart $deployment_string");
+
+  return $status;
+
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="current.xml" type="content"><item name="base_content"><value><item name="title"><value>News Releases</value></item>
+<item name="header_location"><value>../../../headers/main_header.html</value></item>
+<item name="footer_location"><value>../../../footers/main_footer.html</value></item>
+<item name="override_navigation"/><item name="navigation"><value><item name="nav_link"><value><item name="text"><value/></item>
+<item name="url"><value/></item>
+</value></item>
+</value></item>
+<item name="cboxes"/>
+<item name="body"><value><item name="intro"><value><item name="heading"><value>News Releases</value></item>
+<item name="text"><value/></item>
+</value></item>
+</value><value><item name="normal"><value><item name="heading"><value>June 2, 2005</value></item>
+<item name="text"><value>&lt;div style="margin-left:10px"&gt;Federal Reserve lowers interest rates for the fourth time this year. In a move to benefit the housing market, this establishes the fact that the Fed recognizes the sluggish job market. &lt;a href="#"&gt;Read more...&lt;/a&gt;&lt;/div&gt;</value></item>
+</value></item>
+</value><value><item name="normal"><value><item name="heading"><value>May 30, 2005</value></item>
+<item name="text"><value>&lt;div style="margin-left:10px"&gt;FiCorp's CEO, Adam Spellman has agreed to a new five year deal to stay with the bank. This ensures his legacy alongside of his Father, David Spellman, who started the bank twenty-five years ago. &lt;a href="#"&gt;Read more...&lt;/a&gt;&lt;/div&gt;</value></item>
+</value></item>
+</value><value><item name="normal"><value><item name="heading"><value>May 20, 2005</value></item>
+<item name="text"><value>&lt;div style="margin-left:10px"&gt;A new merger was announced yesterday on CNN indicating FiCorp's buyout of Knight Financial Systems. This procurment increases Ficorp's interest in the financial trade industry, now becoming a major player. &lt;a href="#"&gt;Read more...&lt;/a&gt;&lt;/div&gt;</value></item>
+</value></item>
+</value><value><item name="normal"><value><item name="heading"><value>May 10, 2005</value></item>
+<item name="text"><value>&lt;div style="margin-left:10px"&gt;An overseas downfall in India makes for a great opportunity for FiCorp to expand it's international boundaries. &lt;a href="#"&gt;Read more...&lt;/a&gt;&lt;/div&gt;</value></item>
+</value></item>
+</value><value><item name="normal"><value><item name="heading"><value> </value></item>
+<item name="text"><value>&lt;a href="#"&gt;Search archives...&lt;/a&gt;</value></item>
+</value></item>
+</value></item>
+</value></item></record>

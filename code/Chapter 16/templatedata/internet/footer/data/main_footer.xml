@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="main_footer.xml" type="content"><item name="footer"><value><item name="copyright"><value>2005 &amp;copy; FiCorp Banking and Financial Services</value></item>
+<item name="quick_links"><value><item name="link_text"><value>Site Map</value></item>
+<item name="link_href"><value>sitemap.html</value></item>
+</value><value><item name="link_text"><value>Terms of Service</value></item>
+<item name="link_href"><value>terms.html</value></item>
+</value><value><item name="link_text"><value>Privacy Policy</value></item>
+<item name="link_href"><value>privacy.html</value></item>
+</value></item>
+</value></item></record>

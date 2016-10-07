@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="myaccount.xml" type="content"><item name="caption_box"><value><item name="header"><value><item name="text"><value>My Account</value></item>
+<item name="icon"><value>/images/icons/iconSecure.gif</value></item>
+</value></item>
+<item name="form_action"><value>/myaccount</value></item>
+<item name="body"><value><item name="text_form"><value><item name="name"><value>online_id</value></item>
+<item name="description"><value>Enter Onine ID:</value></item>
+<item name="text_align"><value>top</value></item></value></item>
+</value><value><item name="text_form"><value><item name="name"><value>password</value></item>
+<item name="description"><value>Enter Password:</value></item>
+<item name="text_align"><value>top</value></item></value></item>
+</value><value><item name="button_form"><value><item name="button"/></value></item>
+</value></item>
+</value></item></record>

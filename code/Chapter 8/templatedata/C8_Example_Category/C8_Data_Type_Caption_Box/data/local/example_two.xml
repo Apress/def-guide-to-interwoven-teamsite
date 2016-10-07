@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="example_two.xml" type="content"><item name="caption_box"><value><item name="header"><value><item name="label"><value><item name="text"><value>Section Specific</value></item>
+</value></item>
+<item name="header_backgroundcolor"><value>#cdcdcd</value></item>
+</value></item>
+<item name="body"><value><item name="body_link"><value><item name="body_link_text"><value>New Services</value></item>
+<item name="body_link_href"><value>/newservices.html</value></item>
+</value><value><item name="body_link_text"><value>Promtional Info</value></item>
+<item name="body_link_href"><value>/promotionalinfo.html</value></item>
+</value><value><item name="body_link_text"><value>Create an Account</value></item>
+<item name="body_link_href"><value>/createanaccount.html</value></item>
+</value></item>
+</value></item>
+</value></item></record>

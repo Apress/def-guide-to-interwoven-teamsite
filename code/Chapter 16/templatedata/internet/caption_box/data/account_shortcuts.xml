@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="account_shortcuts.xml" type="content"><item name="caption_box"><value><item name="header"><value><item name="text"><value>Account Shortcuts</value></item>
+<item name="icon"><value/></item>
+</value></item>
+<item name="form_action"><value>/navigation</value></item>
+<item name="body"><value><item name="select_form"><value><item name="body_type"><value/></item>
+<item name="name"><value>open_account</value></item>
+<item name="description"><value>Open an Account</value></item>
+<item name="text_align"><value>top</value></item><item name="options"><value><item name="label"><value>Checking</value></item>
+<item name="value"><value>checking.html</value></item>
+</value><value><item name="label"><value>Savings</value></item>
+<item name="value"><value>savings.html</value></item>
+</value><value><item name="label"><value>Investment</value></item>
+<item name="value"><value>investment.html</value></item>
+</value><value><item name="label"><value>Retirement</value></item>
+<item name="value"><value>retirement.html</value></item>
+</value></item>
+</value></item>
+</value><value><item name="select_form"><value><item name="body_type"><value/></item>
+<item name="name"><value>account_services</value></item>
+<item name="description"><value>Account Services</value></item>
+<item name="text_align"><value>top</value></item><item name="options"><value><item name="label"><value>Re-Order Checks</value></item>
+<item name="value"><value>reorderchecks.html</value></item>
+</value><value><item name="label"><value>Direct Deposit</value></item>
+<item name="value"><value>directdeposit.html</value></item>
+</value><value><item name="label"><value>Automatic Billing</value></item>
+<item name="value"><value>automaticbilling.html</value></item>
+</value><value><item name="label"><value>Change Address</value></item>
+<item name="value"><value>changeaddress.html</value></item>
+</value></item>
+</value></item>
+</value></item>
+</value></item></record>

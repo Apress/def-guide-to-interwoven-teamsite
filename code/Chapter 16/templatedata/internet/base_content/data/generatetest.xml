@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="generatetest.xml" type="content"><item name="base_content"><value><item name="title"><value>fafd</value></item>
+<item name="header_location"><value>afdsa</value></item>
+<item name="footer_location"><value>fdasfsd</value></item>
+<item name="override_navigation"/><item name="navigation"><value><item name="nav_link"><value><item name="text"><value>afdsa</value></item>
+<item name="url"><value>dfadsa</value></item>
+</value></item>
+</value></item>
+<item name="cboxes"/>
+<item name="body"/>
+</value></item></record>

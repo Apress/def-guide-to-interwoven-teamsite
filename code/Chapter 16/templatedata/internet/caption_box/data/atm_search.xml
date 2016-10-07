@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="atm_search.xml" type="content"><item name="caption_box"><value><item name="header"><value><item name="text"><value>ATM &amp; Branch Search</value></item>
+<item name="icon"><value/></item>
+</value></item>
+<item name="form_action"><value>/atm_search</value></item>
+<item name="body"><value><item name="text_form"><value><item name="name"><value>address</value></item>
+<item name="description"><value>Address:</value></item>
+<item name="text_align"><value>side</value></item></value></item>
+</value><value><item name="text_form"><value><item name="name"><value>city</value></item>
+<item name="description"><value>City:</value></item>
+<item name="text_align"><value>side</value></item></value></item>
+</value><value><item name="text_form"><value><item name="name"><value>state</value></item>
+<item name="description"><value>State:</value></item>
+<item name="text_align"><value>side</value></item></value></item>
+</value><value><item name="text_form"><value><item name="name"><value>zip</value></item>
+<item name="description"><value>Zip:</value></item>
+<item name="text_align"><value>side</value></item></value></item>
+</value><value><item name="radio_form"><value><item name="name"><value>atm_branch</value></item>
+<item name="description"><value> </value></item>
+<item name="text_align"><value>top</value></item><item name="options"><value><item name="label"><value>Banks</value></item>
+<item name="value"><value>bank</value></item>
+</value><value><item name="label"><value>ATMs</value></item>
+<item name="value"><value>atm</value></item>
+</value></item>
+</value></item>
+</value><value><item name="button_form"><value><item name="button"><value>Yes</value></item></value></item>
+</value></item>
+</value></item></record>

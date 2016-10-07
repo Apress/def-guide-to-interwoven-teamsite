@@ -1,0 +1,102 @@
+
+
+sub writeNavAttributes {
+  
+  # Deterimine the URI of this page
+  #my $page = $ENV{'REQUEST_URI'} || "";
+  my $page = shift || "";
+  $page =~ s/Y://;
+  $page =~ s|\\|/|g;
+
+  if ($page =~ /preview/) {
+    # doing nothing because of preview mode
+    return;
+  }
+
+  # if inside teamsite during generation write out file
+  if ($page =~ /WORKAREA/) {
+  
+    my $vpath = $page;
+    $vpath =~ s/\/iw-mount//;
+    my @attributes = `/progra~1/interwoven/teamsite/bin/iwextatt -l $vpath`;
+    my %ext_att = createAttributeHash(@attributes);
+    my %change = ();
+  
+    $page =~ s|.*?WORKAREA/.*?/(.*?)\..*|$1|;
+    
+    my ($area, $section, $header,$navigation) = split("/",$page);
+    if (!defined $navigation) {
+      $navigation = $page;
+    }
+    $navigation =~ s|.*/(.*?)\..*?$|$1|;
+    
+    
+    $navigation = change_dir_to_label($navigation);
+    $area = change_dir_to_label($area);
+    $header = change_dir_to_label($header);
+    $section = change_dir_to_label($section);
+    #my @navigation = split(" ", $navigation);
+    %ext_att = ();
+    
+    if ($ext_att{area} eq "" && defined $area) {
+      $ext_att{area} = $area;
+      $change{area} = 1;
+    }
+    
+    if ($ext_att{section} eq "" && defined $section) {
+      $ext_att{section} = $section;
+      $change{section} = 1;
+    }
+    
+    if ($ext_att{header} eq "" && defined $header) {
+      $ext_att{header} = $header;
+      $change{header} = 1;
+    }
+    if ($ext_att{navigation} eq "" && defined $navigation) {
+        $ext_att{navigation} = $navigation;
+        $change{navigation} = 1;
+    }
+    
+    setAttributes($vpath,\%ext_att,\%change);
+    return;
+  }
+
+}
+
+sub change_dir_to_label {
+  my $text = shift;
+  
+  $text =~ s|_| |g;
+  $text =~ s/ ([a-z])/ \u$1/g;
+  $text =~ s/^([a-z])/\u$1/;
+  return $text;
+
+}
+
+sub setAttributes {
+  my $vpath = shift;
+  my $ext_att = shift;
+  my $changes = shift;
+  
+  foreach $attribute (keys %$changes) {
+    system("/progra~1/interwoven/teamsite/bin/iwextattr -s \"$attribute=$ext_att->{$attribute}\" $vpath");
+  }
+}
+
+# Create an Extended Attribute Hash
+sub createAttributeHash {
+  my @attributes = @_;
+  my %return_hash = ();
+  #loop through the list of extended attributes and split on
+  #the equal sign to deterimine attribute/value
+  foreach my $line (@attributes) {
+    chomp($line);
+    my ($attribute,$value) = split("=",$line);
+    $return_hash{$attribute} = $value;
+  }
+  
+  # return hash of attributes
+  %return_hash;
+}
+
+1;

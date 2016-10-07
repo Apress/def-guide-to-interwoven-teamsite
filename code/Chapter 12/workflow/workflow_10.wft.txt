@@ -1,0 +1,125 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE workflow SYSTEM "iwwf.dtd">
+
+<template_script>
+  <![CDATA[
+  
+    # Build the contributor selection box
+    sub build_cont_opt {
+      # This would normally be a call to some external
+      # source, such as a database or an XML file
+      my $return_str = "<option value='brian'> .
+                       "Brian Hastings</option>" .
+                       "<option value='justin'>
+                       "Justin Mcneal</option>";
+      return $return_str;
+    }
+    
+    
+    TAG_info(
+    
+      contributor => [
+         html => "<select>" .
+                 &build_cont_opt() ."</select>"
+        label => "Select a Contributor",
+        is_required => "true", 
+      ],
+      
+      iw_setwfarg_due_date => [
+         html => "<input type="text" width="40">",
+        label => "Enter Due Date (MM/DD/YYYY)",
+      ],
+      
+      description => [
+         html => "<textarea cols='30' rows='5'/>",
+        label => "Enter Job Description",
+        is_required => "true",
+      ],
+    )
+    
+    # Grab the description and encode it to html to
+    # eliminate any special characters that will corrupt
+    # the workflow file.
+    my $description = "  description='" .
+                      "__VALUE__('description',"html");".
+                      "'";
+    # For this example we will hard code this value, but
+    # normally this would be gathered dynamically based 
+    # on how the workflow has been started.
+    my $areavpath = "/default/main/WORKAREA/DefinitiveGuide";
+    
+  ]]>
+</template_script>
+
+<workflow 
+    name="Simple Workflow"
+    owner="__TAG__('iw_user');"
+    creator="__TAG__('iw_user');"
+    __INSERT__($description);>
+ 
+  <!-- This is the contributor task -->
+  <usertask 
+     name="contribute" 
+     owner="__TAG__('contributor');"
+     description="Contributor Makes Changes">
+   
+   <areavpath v="__INSERT__($areavpath);"/>
+   
+   <successors>
+     <successorset description="Send for Approval">
+       <succ v="approval"/>
+     </successorset>
+   </successors>
+   
+   <!-- Attach selected files if ran by submit button -->
+   <files>
+     <template_script>
+       <![CDATA[
+         for (my $cnt=0; $cnt< __ELEM__('iw_file'); ++$cnt) {
+           __INSERT__("<file path='__TAG__(iw_file[$cnt];' " .
+                      "comment='Add at Initialization'/>\n";
+         }
+       ]]>
+     </template_script>
+   </files>
+  </usertask>
+ 
+  <!-- The group task for the approval of content -->
+  <grouptask
+     name="approval"
+     description="Approver Reviews Content"
+     retainowner="t" >
+     
+   <areavpath v="__INSERT__($areavpath);"/>  
+     
+   <successors>
+     <successorset description="Approve Changes">
+       <succ v="submit"/>
+     </successorset>
+   
+     <successorset description="Reject Changes">
+       <succ v="contribute"/>
+     </successorset>
+   </successors>
+   
+   <sharedby>
+     <group v='administrators' />
+   </sharedby>
+  </grouptask>
+ 
+  <submittask
+     name="submit"
+     description="Submit files to TS staging"
+     
+   <areavpath v="__INSERT__($areavpath);"/>
+     
+   <successorset description="End Workflow">
+     <succ v="end"/>
+   </successorset>
+  </submittask>
+ 
+  <endtask
+     name="end"
+     description="End the workflow"
+  </endtask>
+</workflow>

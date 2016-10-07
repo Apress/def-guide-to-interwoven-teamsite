@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="index.xml" type="content"><item name="base_content"><value><item name="title"><value>FiCorp Banking | Home</value></item>
+<item name="header_location"><value>headers/main_header.html</value></item>
+<item name="footer_location"><value>footers/main_footer.html</value></item>
+<item name="override_navigation"><value>override</value></item><item name="navigation"><value><item name="nav_link"><value><item name="text"><value>Sign up now for &lt;span style="color:red"&gt;free access&lt;/span&gt; to your accounts</value></item>
+<item name="url"><value/></item>
+</value><value><item name="text"><value>Save For Retirement</value></item>
+<item name="url"><value/></item>
+</value><value><item name="text"><value>Learn More about our Secure Login&lt;img src="/images/icons/iconSecureGray.gif"&gt;</value></item>
+<item name="url"><value/></item>
+</value><value><item name="text"><value>Investment Services</value></item>
+<item name="url"><value/></item>
+</value><value><item name="text"><value>Consumer Education</value></item>
+<item name="url"><value/></item>
+</value><value><item name="text"><value>Home Equity Loans</value></item>
+<item name="url"><value/></item>
+</value><value><item name="text"><value>Career &lt;span style="color:red"&gt;Opportunities!&lt;/span&gt;</value></item>
+<item name="url"><value/></item>
+</value><value><item name="text"><value>Trust Services</value></item>
+<item name="url"><value/></item>
+</value><value><item name="text"><value>Insurance</value></item>
+<item name="url"><value/></item>
+</value></item>
+</value></item>
+<item name="cboxes"><value><item name="location"><value>caption_box/my_account.html</value></item>
+<item name="color"><value>one</value></item></value><value><item name="location"><value>caption_box/account_shortcuts.html</value></item>
+<item name="color"><value>one</value></item></value><value><item name="location"><value>caption_box/atm_search.html</value></item>
+<item name="color"><value>two</value></item></value></item>
+<item name="body"><value><item name="large_ad_graphic"><value><item name="large_ad_graphic"><value>/images/lag/bigCallOnline.jpg</value></item>
+<item name="url"><value/></item>
+</value></item>
+</value><value><item name="dual_image"><value><item name="left_graphic"><value>/images/sag/callOutCollege.jpg</value></item>
+<item name="left_url"><value/></item>
+<item name="right_graphic"><value>/images/sag/callOutApply.jpg</value></item>
+<item name="right_url"><value/></item>
+</value></item>
+</value><value><item name="dual_image"><value><item name="left_graphic"><value>/images/sag/callOutMac.jpg</value></item>
+<item name="left_url"><value/></item>
+<item name="right_graphic"><value>/images/sag/callOutFraud.jpg</value></item>
+<item name="right_url"><value/></item>
+</value></item>
+</value></item>
+</value></item></record>

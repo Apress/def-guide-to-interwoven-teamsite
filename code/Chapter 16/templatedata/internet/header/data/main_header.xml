@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE record SYSTEM "dcr4.5.dtd">
+<record name="main_header.xml" type="content"><item name="header"><value><item name="logo"><value>/images/logos/logo.jpg</value></item>
+<item name="quick_search"><value><item name="text"><value>FIND IT HERE:</value></item>
+<item name="image"><value>/images/button/go.gif</value></item>
+</value></item>
+<item name="quick_links"><value><item name="link_text"><value>home</value></item>
+<item name="link_href"><value>/index.html</value></item>
+<item name="image"><value/></item>
+</value><value><item name="link_text"><value>sign in</value></item>
+<item name="link_href"><value>#</value></item>
+<item name="image"><value/></item>
+</value><value><item name="link_text"><value>locations</value></item>
+<item name="link_href"><value>#</value></item>
+<item name="image"><value/></item>
+</value><value><item name="link_text"><value>open account</value></item>
+<item name="link_href"><value>#</value></item>
+<item name="image"><value/></item>
+</value><value><item name="link_text"><value>contact us</value></item>
+<item name="link_href"><value>#</value></item>
+<item name="image"><value>/images/icons/iconContact.gif</value></item>
+</value></item>
+</value></item></record>

@@ -1,0 +1,132 @@
+#!/opt/teamsite/iw-home/iw-perl/bin/iwperl
+
+################################################################
+#  prepare_email.ipl
+#
+#  Purpose:
+#  This script will gather data from the workflow and 
+#  prepare the email task for a new email.  We have created
+#  this task to enable us to break away from having every other
+#  task an email task.
+#
+#  Author:
+#  Brian Hastings 2-17-2006
+#
+################################################################
+
+use TeamSite::WFworkflow;
+use TeamSite::WFtask;
+use Users;
+
+
+my $users = new Users();
+
+my $edit_url = "http://jboss.brianhastings.com/iw-cc/viewjoblist?" .
+               "vpath=$area_v_path"
+
+my ($job_id,$task_id) = @ARGV;
+
+# Verify we have a job id
+if (!defined $job_id || !defined $task_id) {
+  print "Usage: prepare_email.ipl must be called from an " .
+        "active workflow task.";
+  exit;
+}
+
+# Create our current Job instance
+my $job  = new TeamSite::WFworkflow($job_id);
+
+# Create our current task instance
+my $task = new TeamSite::WFtask($task_id);
+
+# Area vpath
+my $area_v_path = $task->GetArea();
+
+# Get Email Type
+my $email_type = $job->GetVariable("email_type");
+
+my $edit_url = "http://jboss.brianhastings.com/iw-cc/viewjoblist?" .
+               "$job_id";
+
+if ($email_type eq "Perform_Work") {
+  my $next_task = get_task_by_name($email_type);
+  my $subject = "Task(" . $next_tasl->GetId() .
+                ") Work Notification";
+  my $body    = "You have a task to work in your task list.  " .
+                "Click <a href='$edit_url'>here</a> to view the" .
+                " details for this job.";
+  my $to      = $users->GetUsers($area_v_path,$email_type);
+
+  send_message($subject, $body, $to);  
+}                
+                
+if ($email_type eq "Work_Review") {
+  my $next_task = get_task_by_name($email_type);
+  my $subject = "Task(" . $next_tasl->GetId() .
+                ") Work Review";
+  my $body    = "You have a job to review in your task list.  " .
+                "Click <a href='$edit_url'>here</a> to view the" .
+                " details for this job.";
+  my $to      = $users->GetUsers($area_v_path,$email_type);
+
+  send_message($subject, $body, $to);  
+}
+
+if ($email_type eq "Deployment") {
+  my $next_task = get_task_by_name($email_type);
+  my $subject = "Task(" . $next_tasl->GetId() .
+                ") Work Notification";
+  my $body    = "You have a task to work in your task list.  " .
+                "Click <a href='$edit_url'>here</a> to view the" .
+                " details for this job.";
+  my $to      = $users->GetUsers($area_v_path,$email_type);
+
+  send_message($subject, $body, $to);  
+}
+
+CallBack(0,"Email Sent Successfully");
+
+
+
+################################################################
+# Send Message
+################################################################
+sub send_message {
+
+my $sendmail = "/usr/sbin/sendmail -t";
+my $reply_to = "Reply-to: tsadmin@ficorp.com";
+my $subject  = shift;
+my $body     = shift;
+my $to       = shift;
+
+open(SENDMAIL, "|$sendmail") or CallBack(0, "Cannot open $sendmail: $!");
+print SENDMAIL $reply_to;
+print SENDMAIL $subject;
+print SENDMAIL $to;
+print SENDMAIL "Content-type: text/html\n\n";
+print SENDMAIL $body;
+close(SENDMAIL);
+
+}
+
+
+################################################################
+# Get task by task name returns a task with the name passed
+################################################################
+sub get_task_by_name ($$) {
+  my $local_job = shift;
+  my $task_name = shift;
+  
+  my ($suc,$local_task) = $local_job->GetTaskByName($task_name);
+  
+  return $local_task;
+
+}
+
+sub CallBack {
+  my $signal  = shift || "0";
+  my $comment = shift || "Sendmail Complete";
+  
+  $task->CallBack($signal,$comment);
+  exit;
+}

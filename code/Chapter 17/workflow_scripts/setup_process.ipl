@@ -1,0 +1,217 @@
+#!/opt/teamsite/iw-home/iw-perl/bin/iwperl
+
+################################################################
+#  setup_process.ipl
+#
+#  Purpose:
+#  This script will gather data from a parent workflow and 
+#  store this data in the current workflow variables.
+#
+#  Author:
+#  Brian Hastings 2-14-2006
+#
+################################################################
+
+use TeamSite::WFworkflow;
+use TeamSite::WFtask;
+
+my ($job_id,$task_id) = @ARGV;
+
+# Verify we have a job id
+if (!defined $job_id || !defined $task_id) {
+  print "Usage: setup_process.ipl must be called from an " .
+        "active workflow task.";
+  exit;
+}
+
+# Create our current Job instance
+my $job  = new TeamSite::WFworkflow($job_id);
+
+# Create our current task instance
+my $task = new TeamSite::WFtask($task_id);
+
+# Obtain the parent Job task
+my $parent_task = $job->GetVariable("parent_task");
+$parent_task = new TeamSite::WFtask($parent_task);
+
+if (!defined $parent_task) {
+  # perform error handling not a nested workflow
+  print "not defined\n";
+}
+
+# Determine the Process type
+$process_type = $parent_task->GetVariable("process_type");
+print "pt: $process_type\n";
+# We need to set the area v path to appropriate path for this
+# deployment
+my $area_v_path = $parent_task->GetArea();
+
+# Set the vpath for all of our current job tasks
+set_area($job,$area_v_path);
+
+################################################################
+# Begin of Deployment
+################################################################
+if (lc($process_type) eq "deployment") {
+  # Obtain data from the Parent Task
+  my $res_group = $parent_task->GetVariable("resolution_group");
+  my $dep_type = $parent_task->GetVariable("deployment_type");
+  my $target_node = $partent_task->GetVariable("target_node");
+
+  # Store data from the Parent into Current Job Variables
+  $job->SetVariable("resolution_group",$res_group);
+  $job->SetVariable("deployment_type", $dep_type);
+  $job->SetVariable("process_type", $process_type);
+  $job->SetVariable("target_node", $target_node);
+
+  # Which task will we want to activate
+  #   0). External Task - File Based Deployment
+  #   1). Submit Task   - Edition Based Deployment
+  
+  if ($dep_type eq "file_based") {
+    callback($task,0);
+    exit;
+  } elsif ($dep_type eq "edition_based") {
+    callback($task,1);
+    exit;
+  }
+  
+  # If you have reached this point then an error has occured
+  # This should not happen in production.  This will not get
+  # passed testing because it will not transition the workflow
+  # You may want to add a testing task that can be activated
+  # when an unanticipated error occures.
+  
+  # perform error handling
+  exit;
+
+}
+# End of Deployment                                            #
+
+
+################################################################
+# Begin of Work Review
+################################################################
+if (lc($process_type) eq "work_review") {
+  
+  # Obtain data from the Parent Task
+  my $work_group = $parent_task->GetVariable("work_group");
+  my $review_group = $parent_task->GetVariable("review_group");
+  my $e_head = $parent_task->GetVariable("e_head");
+  my $e_body = $parent_task->GetVariable("e_body");
+
+  # Store data from the Parent into Current Job Variables
+  $job->SetVariable("work_group",$work_group);
+  $job->SetVariable("review_group", $review_group);
+  $job->SetVariable("e_head", $e_head);
+  $job->SetVariable("e_body", $e_body);
+  $job->SetVariable("process_type", $process_type);
+  
+  # Set task shared by for Work Task
+  my $work_task = get_task_by_name($job, "Perform_Work");
+  if (defined $work_task || $work_task->IsValid()){
+    $work_task->AddGroup($work_group);
+  } else {
+    # perform error handling
+  }
+  
+  # Set task shared by for Review Task
+  my $review_task = get_task_by_name($job,"Review_Work");
+  if (defined $review_task || $review_task->IsValid()){
+    $review_task->AddGroup($review_group);
+  } else {
+    # perform error handling
+  }
+  
+  # If this component has been activated before lets set the users
+  # back to the original users.
+  if (defined $perform_work) {
+    $work_task->TakeTask($perform_work);
+  }
+  if (defined $review_work) {
+    $review_task->TakeTask($review_work);
+  }
+
+  
+  # No decision to be made just call back
+  callback($task,0);
+  exit;
+}
+# End of Work Review                                           #
+
+################################################################
+# Begin Review
+################################################################
+if (lc($process_type) eq "review") {
+  
+  # Obtain data from the Parent Task
+  my $review_group = $parent_task->GetVariable("review_group");
+
+  # Store data from the Parent into Current Job Variables
+  $job->SetVariable("review_group", $review_group);
+  $job->SetVariable("process_type", $process_type);
+  
+  # Set task shared by for Review Task
+  my $review_task = get_task_by_name($job,"Review_Work");
+  if (defined $review_task || $review_task->IsValid()){
+    $review_task->AddGroup($review_group);
+  } else {
+    # perform error handling
+  }
+  
+  # No decision to be made just call back
+  callback($task,0);
+  exit;
+}
+# End of Review   
+
+
+
+################################################################
+# The set_area subroutine is used to set each of the job tasks
+# new area_v_path.
+################################################################
+sub set_area ($$) {
+  my $local_job = shift;
+  my $area_v_path = shift || "";
+  
+  # if area_v_path is set we will change all paths
+  if ($area_v_path ne "") {
+    # Obtain an array of task objects
+    my @tasks = $local_job->GetTasks();
+  
+    # Loop through the task objects and set area and refresh
+    my @looptask = @tasks[0];
+    foreach my $local_task (@looptasks) {
+      $local_task->SetArea($area_v_path);
+      $local_task->Refresh();
+    }
+  }
+  
+}
+
+################################################################
+# The callback subroutine will make a call to the workflow
+# sub-system, and indicate that the external task is now
+# complete.  The callback also indicates the next task to use
+# based on the list of successors setup in the wft file
+################################################################
+sub callback ($$) {
+  my $local_task = shift;
+  my $value = shift || "0";
+  $local_task->CallBack($value);
+}
+
+
+################################################################
+# Get task by task name returns a task with the name passed
+################################################################
+sub get_task_by_name ($$) {
+  my $local_job = shift;
+  my $task_name = shift;
+  
+  my ($suc,$local_task) = $local_job->GetTaskByName($task_name);
+  
+  return $local_task;
+
+}

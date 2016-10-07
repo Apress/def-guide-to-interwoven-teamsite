@@ -1,0 +1,76 @@
+#!/opt/teamsite/iw-home/iw-perl/bin/iwperl
+
+################################################################
+#  prepare_email.ipl
+#
+#  Purpose:
+#  This script will gather data from the workflow and 
+#  prepare the email task for a new email.  We have created
+#  this task to enable us to break away from having every other
+#  task an email task.
+#
+#  Author:
+#  Brian Hastings 2-17-2006
+#
+################################################################
+
+use TeamSite::WFworkflow;
+use TeamSite::WFtask;
+
+my ($job_id,$task_id) = @ARGV;
+
+# Verify we have a job id
+if (!defined $job_id || !defined $task_id) {
+  print "Usage: start_nested.ipl must be called from an " .
+        "active workflow task.";
+  exit;
+}
+
+# Create our current Job instance
+my $job  = new TeamSite::WFworkflow($job_id);
+
+# Create our current task instance
+my $task = new TeamSite::WFtask($task_id);
+
+# Obtain variables for starting pseudo child workflow
+my $start_task = $task->GetVariable("start_task");
+my $xml_file   = $task->GetVariable("xml_file");
+
+# Lets start it up via command line tools
+my $new_job_id = `c:\\progra~1\\interwoven\\teamsite\\bin\\iwjobc c:\\progra~1\\interwoven\\teamsite\\local\\config\\wft\\$xml_file`;
+my $succ    = system("c:\\progra~1\\interwoven\\teamsite\\bin\\iwinvokejob $new_job_id");
+
+# Lets strip off the new line off of the end
+$new_job_id =~ s/\n//;
+
+# Create a new job obj with the new job id
+my $job_obj = new TeamSite::WFworkflow($new_job_id);
+
+# Set job description
+$job_obj->SetDescription($task->GetDescription() . ": " . $task_id . " - " . $job->GetDescription());
+$job_obj->Refresh();
+
+# Create a task obj for starting child process.
+my $child_task = get_task_by_name($job_obj,$start_task);
+
+# We need to set the child workflow variable for parent_task
+$job_obj->SetVariable("parent_task",$task_id);
+
+# We now need to transition the start task of the child workflow
+$child_task->CallBack(0);
+
+# NOTE: We do not transition our workflow because the child will
+#       do this for us when it has finished.
+
+################################################################
+# Get task by task name returns a task with the name passed
+################################################################
+sub get_task_by_name ($$) {
+  my $local_job = shift;
+  my $task_name = shift;
+  
+  my ($suc,$local_task) = $local_job->GetTaskByName($task_name);
+  
+  return $local_task;
+
+}
